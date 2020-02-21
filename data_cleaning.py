@@ -19,26 +19,17 @@ df.isnull().sum()
 df = df.dropna(subset = ['user_id'])
 df.to_csv('listings.csv')
 
-df = pd.read_csv('listings.csv')
-df = df.drop(columns='Unnamed: 0')
-df
 
+len(df)
+len(df.user_id.value_counts())
+len(df.taxonomy_id.value_counts())
+len(df.listing_id.value_counts())
+len(df.category_id.value_counts())
+len(df.category_path_ids.value_counts())
 
-df.isnull().sum()
+df[df.groupby('taxonomy_path')['taxonomy_path'].transform('size') >= 200]
 
-df.taxonomy_id.value_counts()
+df.listing_id.value_counts()
 
-len(df.taxonomy_id.unique())
-
-dftax = (df[df.groupby('taxonomy_path')['taxonomy_path'].transform('size') >= 200])
-dftax
-
-import matplotlib.pyplot as plt
-import seaborn as sns
-plt.figure(figsize=(15,7))
-plt.xticks(rotation=90)
-ax = sns.countplot(x='taxonomy_path', data=dftax)
-
-
-
-df[df['taxonomy_id'] == 1.0]
+df = df.drop_duplicates(subset='listing_id')
+df.to_csv('unique_listings.csv')

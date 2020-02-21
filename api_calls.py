@@ -17,7 +17,7 @@ def api_call(uri, url_params):
 
 
 # all_listings = []
-cur = 45000
+cur = 0
 while cur < 50100:
     url_params['offset'] = cur
     listings_data = api_call(uri, url_params)
