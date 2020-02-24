@@ -27,9 +27,10 @@ len(df.listing_id.value_counts())
 len(df.category_id.value_counts())
 len(df.category_path_ids.value_counts())
 
-df[df.groupby('taxonomy_path')['taxonomy_path'].transform('size') >= 200]
 
 df.listing_id.value_counts()
 
 df = df.drop_duplicates(subset='listing_id')
+df = df.dropna(subset = ['price'])
+
 df.to_csv('unique_listings.csv')
