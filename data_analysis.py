@@ -62,15 +62,16 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import CountVectorizer
 
 
-df.columns
+df = pd.read_csv('unique_listings.csv')
+df = df.drop(columns=['Unnamed: 0', 'recipient', 'occasion', 'currency_code', 'quantity', 'language'])
 
+df
 
+dftokens = df.copy()
 
 stringcol = list(df.select_dtypes(['object']).columns)
 stringcol.remove('url')
 stringcol
-
-dftokens = df.copy()
 
 
 for col in stringcol:
@@ -93,18 +94,19 @@ for col in stringcol:
     dftokens[col] = list(map(process_text, dftokens[col]))
 
 
-dftokens['tokens'] = (dftokens.title + dftokens.description + dftokens.tags + dftokens.category_path + dftokens.taxonomy_path).map(set).map(list)
+dftokens['tokens'] = (dftokens.title + dftokens.tags + dftokens.category_path + dftokens.taxonomy_path).map(set).map(list)
 dftokens['tokens'] = dftokens.tokens.apply(', '.join)
 dftokens
-
 
 dftokens.to_csv('dftokens.csv')
 
 dftokens
 
-dftokens = dftokens.drop(columns=['user_id', 'price', 'currency_code', 'quantity', 'recipient', 'occasion', 'language', 'title', 'description', 'tags', 'category_path', 'taxonomy_path'])
+dftokens = dftokens.drop(columns=['user_id', 'title', 'description'])
 
 dftokens.tokens = dftokens.tokens.str.replace(r',', '')
+
+dftokens.to_csv('dftokenscleaned.csv')
 
 
 
